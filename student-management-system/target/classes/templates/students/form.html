@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title th:text="${pageTitle} + ' | CampusDesk'">Student Form</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body>
+<header class="topbar"><a class="brand" th:href="@{/}">Campus<span>Desk</span></a><div class="top-note">Student Management System</div></header>
+<main class="container form-container">
+  <a class="back-link" th:href="@{/}">← Back to students</a>
+  <section class="form-panel">
+    <p class="eyebrow">STUDENT RECORD</p><h1 th:text="${pageTitle}">Add Student</h1><p class="subtext">Enter the student's information below.</p>
+    <form th:object="${student}" th:action="${student.id == null} ? @{/students} : @{/students/{id}(id=${student.id})}" method="post" class="student-form">
+      <label for="name">Full name</label><input id="name" type="text" th:field="*{name}" placeholder="e.g. Priya Sharma" required maxlength="100"><small class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+      <label for="email">Email address</label><input id="email" type="email" th:field="*{email}" placeholder="e.g. priya@example.com" required><small class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+      <label for="course">Course / Department</label><select id="course" th:field="*{course}" required><option value="">Select a course</option><option>Computer Science</option><option>Information Technology</option><option>Electronics</option><option>Mechanical Engineering</option><option>Business Administration</option><option>Commerce</option><option>Other</option></select><small class="field-error" th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></small>
+      <div class="form-actions"><a class="btn light" th:href="@{/}">Cancel</a><button class="btn primary" type="submit" th:text="${student.id == null} ? 'Save Student' : 'Update Student'">Save Student</button></div>
+    </form>
+  </section>
+  <footer>CampusDesk · Student Management System</footer>
+</main>
+</body></html>

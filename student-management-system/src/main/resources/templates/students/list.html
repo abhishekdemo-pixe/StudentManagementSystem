@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Management System</title><link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar"><div class="brand">Campus<span>Desk</span></div><div class="top-note">Student Management System</div></header>
+<main class="container">
+  <section class="hero">
+    <div><p class="eyebrow">ADMIN DASHBOARD</p><h1>Manage your students</h1><p class="subtext">Add, update, search, and manage student records in one place.</p></div>
+    <a class="btn primary" th:href="@{/students/new}">＋ Add Student</a>
+  </section>
+  <div class="alert success" th:if="${success}" th:text="${success}"></div>
+  <div class="alert error" th:if="${error}" th:text="${error}"></div>
+  <section class="stats"><div class="stat-card"><span class="stat-icon">♙</span><div><p>Total students</p><strong th:text="${#lists.size(students)}">0</strong></div></div><div class="stat-card"><span class="stat-icon">⌕</span><div><p>Quick search</p><strong class="stat-label">Name, email or course</strong></div></div></section>
+  <section class="panel">
+    <div class="panel-head"><div><h2>Student directory</h2><p>Browse and maintain student details</p></div>
+      <form class="search" method="get" th:action="@{/}"><input type="search" name="q" placeholder="Search students..." th:value="${q}"><button class="btn dark" type="submit">Search</button><a class="btn light" th:href="@{/}" th:if="${q != ''}">Clear</a></form>
+    </div>
+    <div class="table-wrap">
+      <table><thead><tr><th>STUDENT</th><th>EMAIL ADDRESS</th><th>COURSE</th><th class="actions-head">ACTIONS</th></tr></thead>
+      <tbody>
+      <tr th:each="student : ${students}">
+        <td><div class="student-cell"><span class="avatar" th:text="${#strings.substring(student.name,0,1).toUpperCase()}">S</span><div><strong th:text="${student.name}">Student Name</strong><small th:text="'ID: ' + ${student.id}">ID: 1</small></div></div></td>
+        <td th:text="${student.email}">student@example.com</td><td><span class="course-tag" th:text="${student.course}">Computer Science</span></td>
+        <td class="actions"><a class="action-link" th:href="@{/students/{id}/edit(id=${student.id})}">Edit</a>
+          <form th:action="@{/students/{id}/delete(id=${student.id})}" method="post" onsubmit="return confirm('Delete this student record?');"><button class="action-link danger-link" type="submit">Delete</button></form></td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(students)}"><td colspan="4" class="empty"><div class="empty-icon">⌕</div><strong>No students found</strong><p>Try another search or add a new student record.</p><a class="btn primary" th:href="@{/students/new}">Add first student</a></td></tr>
+      </tbody></table>
+    </div>
+    <div class="panel-foot" th:text="'Showing ' + ${#lists.size(students)} + ' student record(s)'">Showing 0 student records</div>
+  </section>
+  <footer>CampusDesk · Student Management System</footer>
+</main>
+</body></html>
